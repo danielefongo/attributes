@@ -4,8 +4,7 @@
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `attributes` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `attributes` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,7 +14,35 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/attributes](https://hexdocs.pm/attributes).
+## Usage
 
+Attributes offers utility functions to set and get complex attributes on modules.
+
+```elixir
+defmodule MyModule do
+  Attributes.set(__MODULE__, [:path, :to, :attr], :value)
+end
+```
+
+Attributes supports nested maps and keyword.
+The previous assignment could be rewritten as follow:
+
+```elixir
+Attributes.set(__MODULE__, [:path], [to: [attr: :value]])
+```
+
+```elixir
+Attributes.set(__MODULE__, [:path], %{to: %{attr: :value}})
+```
+
+After defining an attribute, you can obtain its value using `Attributes.get/2` and `Attributes.get!/2` methods.
+
+```elixir
+iex> Attributes.get(MyModule, [:path, :to, :attr])
+iex> :value
+```
+
+```elixir
+iex> Attributes.get(MyModule, [:path, :to])
+iex> [attr: :value]
+```
