@@ -1,7 +1,7 @@
 # Attributes
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/danielefongo/attributes/ci)
-![Coveralls](https://img.shields.io/coveralls/github/danielefongo/attributes)
+![Coveralls](https://img.shields.io/coveralls/github/danielefongo/attributes/main)
 [![Hex pm](http://img.shields.io/hexpm/v/attributes.svg?style=flat)](https://hex.pm/packages/attributes)
 ![Hex.pm](https://img.shields.io/hexpm/l/attributes)
 
