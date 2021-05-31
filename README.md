@@ -19,6 +19,10 @@ def deps do
 end
 ```
 
+## Documentation
+
+Documentation can be found at [https://hexdocs.pm/attributes](https://hexdocs.pm/attributes).
+
 ## Usage
 
 Attributes offers utility functions to set and get complex attributes on modules.
