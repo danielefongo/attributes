@@ -165,5 +165,52 @@ defmodule AttributesTest do
     end
   end
 
+  describe "hybrid" do
+    test "set override inside keyword" do
+      defmodule HybridSetOverrideInsideKeyword do
+        Attributes.set(__MODULE__, [:key], [])
+        Attributes.set(__MODULE__, [:key, :subkey], :value)
+      end
+
+      assert get_attrs(HybridSetOverrideInsideKeyword) == [key: [subkey: :value]]
+    end
+
+    test "set override inside map" do
+      defmodule HybridSetOverrideInsideMap do
+        Attributes.set(__MODULE__, [:key], %{})
+        Attributes.set(__MODULE__, [:key, :subkey], :value)
+      end
+
+      assert get_attrs(HybridSetOverrideInsideMap) == [key: %{subkey: :value}]
+    end
+
+    test "set raise on value override when is not a map/keyword" do
+      assert_raise RuntimeError, fn ->
+        defmodule HybridSetRaiseOnValue do
+          Attributes.set(__MODULE__, [:key], :value)
+          Attributes.set(__MODULE__, [:key, :subkey], :value2)
+        end
+      end
+    end
+
+    test "set override outer keyword" do
+      defmodule HybridSetOverrideOuterKeyword do
+        Attributes.set(__MODULE__, [:key, :subkey], :value)
+        Attributes.set(__MODULE__, [:key], data: :new)
+      end
+
+      assert get_attrs(HybridSetOverrideOuterKeyword) == [key: [data: :new]]
+    end
+
+    test "set override outer map" do
+      defmodule HybridSetOverrideOuterMap do
+        Attributes.set(__MODULE__, [:key, :subkey], :value)
+        Attributes.set(__MODULE__, [:key], %{data: :new})
+      end
+
+      assert get_attrs(HybridSetOverrideOuterMap) == [key: %{data: :new}]
+    end
+  end
+
   defp get_attrs(module), do: module.__info__(:attributes)[:__attributes__]
 end

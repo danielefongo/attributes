@@ -39,12 +39,16 @@ defmodule Attributes do
       Module.register_attribute(module, @attributes_field, persist: true)
     end
 
-    new_attributes =
-      module
-      |> attributes()
-      |> put_in(filter(where), value)
+    try do
+      new_attributes =
+        module
+        |> attributes()
+        |> put_in(filter(where), value)
 
-    Module.put_attribute(module, @attributes_field, new_attributes)
+      Module.put_attribute(module, @attributes_field, new_attributes)
+    rescue
+      FunctionClauseError -> raise "Cannot set on path #{inspect(where)}"
+    end
   end
 
   defp attributes(module) do
