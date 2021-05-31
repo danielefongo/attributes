@@ -109,7 +109,8 @@ defmodule Attributes do
 
       Module.put_attribute(module, @attributes_field, new_attributes)
     rescue
-      FunctionClauseError -> raise "Cannot set on path #{inspect(path)}"
+      FunctionClauseError ->
+        reraise "Cannot set on path #{inspect(path)}", System.stacktrace()
     end
   end
 
