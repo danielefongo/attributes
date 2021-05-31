@@ -9,6 +9,10 @@ defmodule Attributes do
     end
   end
 
+  def get(module, []) do
+    raise "No path provided when getting attributes from #{module}."
+  end
+
   def get(module, where) do
     module
     |> attributes()
@@ -20,6 +24,10 @@ defmodule Attributes do
       nil -> set(module, where, value)
       _ -> raise_error(where, "already defined")
     end
+  end
+
+  def set(module, [], value) do
+    raise "No path provided when assigning #{value} on #{module}."
   end
 
   def set(module, where, value) do

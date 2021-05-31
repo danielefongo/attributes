@@ -3,6 +3,36 @@ defmodule AttributesTest do
 
   defmodule Dummy, do: :ok
 
+  describe "empty" do
+    test "set raise" do
+      assert_raise RuntimeError, fn ->
+        defmodule EmptySetRaise do
+          Attributes.set(__MODULE__, [], :value)
+        end
+      end
+    end
+
+    test "set! raise" do
+      assert_raise RuntimeError, fn ->
+        defmodule EmptySetRaise do
+          Attributes.set!(__MODULE__, [], :value)
+        end
+      end
+    end
+
+    test "get raise" do
+      assert_raise RuntimeError, fn ->
+        Attributes.get(__MODULE__, [])
+      end
+    end
+
+    test "get! raise" do
+      assert_raise RuntimeError, fn ->
+        Attributes.get!(__MODULE__, [])
+      end
+    end
+  end
+
   describe "shallow" do
     test "set different keys" do
       defmodule ShallowSetDifferentKeys do
