@@ -27,7 +27,7 @@ defmodule Attributes.MixProject do
       ],
       docs: [
         main: "readme",
-        extras: ["README.md", "LICENSE"],
+        extras: ["README.md", "changelog.md", "LICENSE"],
         source_ref: "v#{@version}",
         source_url: @github
       ]

@@ -16,7 +16,7 @@ defmodule Attributes do
   ### Example
     Attributes.set(__MODULE__, [:path], %{to: %{attr: :value}})
 
-  After defining an attribute, you can obtain its value using `get/2` and `get!/2` methods.
+  After defining an attribute, you can obtain its value using `get/2`, `get/3` or `get!/2` methods.
 
   ### Example
       iex> Attributes.get(MyModule, [:path, :to, :attr])
@@ -32,7 +32,7 @@ defmodule Attributes do
   @doc """
   Gets attribute by path and raises if not found.
 
-  It is the extension of `get/2` that requires the value or the path to be defined:
+  It is the extension of `get/3` that requires the value or the path to be defined:
   - path should exist
   - value should not be `nil`
 
@@ -54,14 +54,28 @@ defmodule Attributes do
   ## Example
       Attributes.get(MyModule, [:path])
   """
-  def get(module, []) do
+  def get(module, path), do: get(module, path, nil)
+
+  @doc """
+  Gets attribute by path with default.
+
+  It returns default if path is not found.
+
+  ## Example
+      Attributes.get(MyModule, [:path], :default)
+  """
+  def get(module, [], _default) do
     raise "No path provided when getting attributes from #{module}."
   end
 
-  def get(module, path) do
+  def get(module, path, default) do
     module
     |> attributes()
     |> get_in(filter(path))
+    |> case do
+      nil -> default
+      val -> val
+    end
   end
 
   @doc """

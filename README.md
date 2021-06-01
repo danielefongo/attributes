@@ -44,7 +44,7 @@ Attributes.set(__MODULE__, [:path], [to: [attr: :value]])
 Attributes.set(__MODULE__, [:path], %{to: %{attr: :value}})
 ```
 
-After defining an attribute, you can obtain its value using `Attributes.get/2` and `Attributes.get!/2` methods.
+After defining an attribute, you can obtain its value using `Attributes.get/2`, `Attributes.get/3` or `Attributes.get!/2` methods.
 
 ```elixir
 iex> Attributes.get(MyModule, [:path, :to, :attr])

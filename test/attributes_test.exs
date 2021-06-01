@@ -83,6 +83,10 @@ defmodule AttributesTest do
       assert Attributes.get(Dummy, [:key]) == nil
     end
 
+    test "get default" do
+      assert Attributes.get(Dummy, [:key], :default) == :default
+    end
+
     test "get!" do
       defmodule ShallowGetBang do
         Module.register_attribute(__MODULE__, :__attributes__, persist: true)
@@ -147,6 +151,10 @@ defmodule AttributesTest do
 
     test "get nil" do
       assert Attributes.get(Dummy, [:key, :subkey]) == nil
+    end
+
+    test "get default" do
+      assert Attributes.get(Dummy, [:key, :subkey], :default) == :default
     end
 
     test "get!" do
