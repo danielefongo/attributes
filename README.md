@@ -14,7 +14,7 @@ The package can be installed by adding `attributes` to your list of dependencies
 ```elixir
 def deps do
   [
-    {:attributes, "~> 0.1.0"}
+    {:attributes, "~> 0.1.1"}
   ]
 end
 ```
