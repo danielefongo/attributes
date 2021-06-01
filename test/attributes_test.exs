@@ -220,5 +220,19 @@ defmodule AttributesTest do
     end
   end
 
+  describe "already compiled" do
+    test "set raise" do
+      assert_raise RuntimeError, fn ->
+        Attributes.set(Dummy, [:key], :value2)
+      end
+    end
+
+    test "set! raise" do
+      assert_raise RuntimeError, fn ->
+        Attributes.set!(Dummy, [:key], :value2)
+      end
+    end
+  end
+
   defp get_attrs(module), do: module.__info__(:attributes)[:__attributes__]
 end
