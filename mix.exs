@@ -7,7 +7,7 @@ defmodule Attributes.MixProject do
   def project do
     [
       app: :attributes,
-      description: "Set and get complex attributes on modules",
+      description: "Manipulate complex attributes on modules",
       source_url: @github,
       version: @version,
       elixir: "~> 1.10",

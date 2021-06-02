@@ -5,7 +5,7 @@
 [![Hex pm](http://img.shields.io/hexpm/v/attributes.svg?style=flat)](https://hex.pm/packages/attributes)
 ![Hex.pm](https://img.shields.io/hexpm/l/attributes)
 
-Set and get complex attributes on modules
+Manipulate complex attributes on modules.
 
 ## Installation
 
