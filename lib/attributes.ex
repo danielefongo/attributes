@@ -2,6 +2,9 @@ defmodule Attributes do
   @moduledoc """
   Attributes offers utility functions to manipulate complex attributes on modules.
 
+  A typical usage could be inside macros that need to enrich modules before their compilation.
+  You can set, get or delete attributes' tree using partial or full path.
+
   ## Example
       defmodule MyModule do
         Attributes.set(__MODULE__, [:path, :to, :attr], :value)
