@@ -1,6 +1,6 @@
 defmodule Attributes do
   @moduledoc """
-  Attributes offers utility functions to set and get complex attributes on modules.
+  Attributes offers utility functions to set, get or delete complex attributes on modules.
 
   ## Example
       defmodule MyModule do
@@ -70,7 +70,7 @@ defmodule Attributes do
 
   def get(module, path, default) do
     module
-    |> attributes()
+    |> get_attributes()
     |> get_in(filter(path))
     |> case do
       nil -> default
@@ -107,6 +107,57 @@ defmodule Attributes do
   end
 
   def set(module, path, value) do
+    edit_attributes(module, filter(path), "set", fn attributes, path ->
+      put_in(attributes, path, value)
+    end)
+  end
+
+  @doc """
+  Deletes attribute by path and raises if not found.
+
+  It is the extension of `delete/2` that requires the value and the path to be defined:
+  - path should exist
+  - value should not be `nil`
+
+  ## Example
+      Attributes.delete!(MyModule, [:path])
+  """
+  def delete!(module, path) do
+    case get(module, path) do
+      nil -> raise_error(path, "not found")
+      _ -> delete(module, path)
+    end
+  end
+
+  @doc """
+  Deletes attribute by path.
+
+  It does not raise if the path is not found.
+
+  ## Example
+      Attributes.delete(MyModule, [:path])
+  """
+  def delete(module, []) do
+    raise "No path provided when deleting attributes from #{module}."
+  end
+
+  def delete(module, path) do
+    edit_attributes(module, filter(path), "delete", fn attributes, path ->
+      attributes |> pop_in(path) |> elem(1)
+    end)
+  end
+
+  defp get_attributes(module) do
+    if editable?(module) do
+      Module.get_attribute(module, @attributes_field, [])
+    else
+      :attributes
+      |> module.__info__()
+      |> Keyword.get(@attributes_field, [])
+    end
+  end
+
+  defp edit_attributes(module, path, action_name, lambda) do
     if not editable?(module) do
       raise "#{module} already compiled."
     end
@@ -118,23 +169,13 @@ defmodule Attributes do
     try do
       new_attributes =
         module
-        |> attributes()
-        |> put_in(filter(path), value)
+        |> get_attributes()
+        |> lambda.(path)
 
       Module.put_attribute(module, @attributes_field, new_attributes)
     rescue
       FunctionClauseError ->
-        reraise "Cannot set on path #{inspect(path)}", System.stacktrace()
-    end
-  end
-
-  defp attributes(module) do
-    if editable?(module) do
-      Module.get_attribute(module, @attributes_field, [])
-    else
-      :attributes
-      |> module.__info__()
-      |> Keyword.get(@attributes_field, [])
+        reraise "Cannot #{action_name} on path #{inspect(path)}", System.stacktrace()
     end
   end
 

@@ -31,6 +31,18 @@ defmodule AttributesTest do
         Attributes.get!(__MODULE__, [])
       end
     end
+
+    test "delete raise" do
+      assert_raise RuntimeError, fn ->
+        Attributes.delete(__MODULE__, [])
+      end
+    end
+
+    test "delete! raise" do
+      assert_raise RuntimeError, fn ->
+        Attributes.delete!(__MODULE__, [])
+      end
+    end
   end
 
   describe "shallow" do
@@ -101,6 +113,47 @@ defmodule AttributesTest do
         Attributes.get!(Dummy, [:key])
       end
     end
+
+    test "delete" do
+      defmodule ShallowDelete do
+        Module.register_attribute(__MODULE__, :__attributes__, persist: true)
+        @__attributes__ [key: :value, key2: :value2]
+        Attributes.delete(ShallowDelete, [:key])
+      end
+
+      assert get_attrs(ShallowDelete) == [key2: :value2]
+    end
+
+    test "delete not existing" do
+      defmodule ShallowDeleteNotExisting do
+        Module.register_attribute(__MODULE__, :__attributes__, persist: true)
+        @__attributes__ []
+
+        Attributes.delete(ShallowDeleteNotExisting, [:key])
+      end
+
+      assert get_attrs(ShallowDeleteNotExisting) == []
+    end
+
+    test "delete!" do
+      defmodule ShallowDeleteBang do
+        Module.register_attribute(__MODULE__, :__attributes__, persist: true)
+        @__attributes__ [key: :value, key2: :value2]
+        Attributes.delete!(ShallowDeleteBang, [:key])
+      end
+
+      assert get_attrs(ShallowDeleteBang) == [key2: :value2]
+    end
+
+    test "delete! raise on nil" do
+      assert_raise RuntimeError, fn ->
+        defmodule ShallowDeleteBangRaise do
+          Module.register_attribute(__MODULE__, :__attributes__, persist: true)
+          @__attributes__ []
+          Attributes.delete!(ShallowDeleteBangRaise, [:key])
+        end
+      end
+    end
   end
 
   describe "nested" do
@@ -169,6 +222,47 @@ defmodule AttributesTest do
     test "get! raises on nil" do
       assert_raise RuntimeError, fn ->
         Attributes.get!(Dummy, [:key, :subkey])
+      end
+    end
+
+    test "delete" do
+      defmodule NestedDelete do
+        Module.register_attribute(__MODULE__, :__attributes__, persist: true)
+        @__attributes__ [key: [subkey: :value, subkey2: :value2]]
+        Attributes.delete(NestedDelete, [:key, :subkey])
+      end
+
+      assert get_attrs(NestedDelete) == [key: [subkey2: :value2]]
+    end
+
+    test "delete not existing" do
+      defmodule NestedDeleteNotExisting do
+        Module.register_attribute(__MODULE__, :__attributes__, persist: true)
+        @__attributes__ []
+
+        Attributes.delete(NestedDeleteNotExisting, [:key, :subkey])
+      end
+
+      assert get_attrs(NestedDeleteNotExisting) == []
+    end
+
+    test "delete!" do
+      defmodule NestedDeleteBang do
+        Module.register_attribute(__MODULE__, :__attributes__, persist: true)
+        @__attributes__ [key: [subkey: :value, subkey2: :value2]]
+        Attributes.delete!(NestedDeleteBang, [:key, :subkey])
+      end
+
+      assert get_attrs(NestedDeleteBang) == [key: [subkey2: :value2]]
+    end
+
+    test "delete! raise on nil" do
+      assert_raise RuntimeError, fn ->
+        defmodule NestedDeleteBangRaise do
+          Module.register_attribute(__MODULE__, :__attributes__, persist: true)
+          @__attributes__ []
+          Attributes.delete!(NestedDeleteBangRaise, [:key, :subkey])
+        end
       end
     end
   end

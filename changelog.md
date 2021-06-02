@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Delete method
+
 ## [0.1.1] - 2021-06-01
 
 ### Added
