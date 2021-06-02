@@ -1,6 +1,6 @@
 defmodule Attributes do
   @moduledoc """
-  Attributes offers utility functions to set, get or delete complex attributes on modules.
+  Attributes offers utility functions to manipulate complex attributes on modules.
 
   ## Example
       defmodule MyModule do

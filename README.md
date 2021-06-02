@@ -25,7 +25,7 @@ Documentation can be found at [https://hexdocs.pm/attributes](https://hexdocs.pm
 
 ## Usage
 
-Attributes offers utility functions to set and get complex attributes on modules.
+Attributes offers utility functions to manipulate complex attributes on modules.
 
 ```elixir
 defmodule MyModule do
