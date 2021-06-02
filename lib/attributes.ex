@@ -32,7 +32,7 @@ defmodule Attributes do
   @doc """
   Gets attribute by path and raises if not found.
 
-  It is the extension of `get/3` that requires the value or the path to be defined:
+  It is the extension of `get/2` that requires the value and the path to be defined:
   - path should exist
   - value should not be `nil`
 
