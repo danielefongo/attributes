@@ -14,7 +14,7 @@ defmodule AttributesTest do
 
     test "set! raise" do
       assert_raise RuntimeError, fn ->
-        defmodule EmptySetRaise do
+        defmodule EmptySetBangRaise do
           Attributes.set!(__MODULE__, [], :value)
         end
       end
@@ -41,6 +41,22 @@ defmodule AttributesTest do
     test "delete! raise" do
       assert_raise RuntimeError, fn ->
         Attributes.delete!(__MODULE__, [])
+      end
+    end
+
+    test "update raise" do
+      assert_raise RuntimeError, fn ->
+        defmodule EmptyUpdateRaise do
+          Attributes.update(__MODULE__, [], & &1)
+        end
+      end
+    end
+
+    test "update! raise" do
+      assert_raise RuntimeError, fn ->
+        defmodule EmptyUpdateBangRaise do
+          Attributes.update!(__MODULE__, [], & &1)
+        end
       end
     end
   end
@@ -154,6 +170,33 @@ defmodule AttributesTest do
         end
       end
     end
+
+    test "update" do
+      defmodule ShallowUpdate do
+        Attributes.set(__MODULE__, [:key], 41)
+        Attributes.update(__MODULE__, [:key], &(&1 + 1))
+      end
+
+      assert get_attrs(ShallowUpdate) == [key: 42]
+    end
+
+    test "update!" do
+      defmodule ShallowUpdateBang do
+        Attributes.set(__MODULE__, [:key], 41)
+        Attributes.update!(__MODULE__, [:key], &(&1 + 1))
+      end
+
+      assert get_attrs(ShallowUpdateBang) == [key: 42]
+    end
+
+    test "set! raise on nil" do
+      assert_raise RuntimeError, fn ->
+        defmodule ShallowUpdateBangRaise do
+          Attributes.set(__MODULE__, [:key], nil)
+          Attributes.update!(__MODULE__, [:key], &(&1 + 1))
+        end
+      end
+    end
   end
 
   describe "nested" do
@@ -262,6 +305,33 @@ defmodule AttributesTest do
           Module.register_attribute(__MODULE__, :__attributes__, persist: true)
           @__attributes__ []
           Attributes.delete!(NestedDeleteBangRaise, [:key, :subkey])
+        end
+      end
+    end
+
+    test "update" do
+      defmodule NestedUpdate do
+        Attributes.set(__MODULE__, [:key], 41)
+        Attributes.update(__MODULE__, [:key], &(&1 + 1))
+      end
+
+      assert get_attrs(NestedUpdate) == [key: 42]
+    end
+
+    test "update!" do
+      defmodule NestedUpdateBang do
+        Attributes.set(__MODULE__, [:key], 41)
+        Attributes.update!(__MODULE__, [:key], &(&1 + 1))
+      end
+
+      assert get_attrs(NestedUpdateBang) == [key: 42]
+    end
+
+    test "set! raise on nil" do
+      assert_raise RuntimeError, fn ->
+        defmodule NestedUpdateBangRaise do
+          Attributes.set(__MODULE__, [:key], nil)
+          Attributes.update!(__MODULE__, [:key], &(&1 + 1))
         end
       end
     end

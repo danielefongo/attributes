@@ -116,6 +116,44 @@ defmodule Attributes do
   end
 
   @doc """
+  Update attribute to path and raise error if not found.
+
+  Available at compile time only.
+  It is the extension of `update/3` that requires the value and the path to be defined:
+  - path should exist
+  - value should not be `nil`
+
+  ## Example
+      Attributes.update!(MyModule, [:path], :value)
+  """
+  def update!(module, path, lambda) do
+    case get(module, path) do
+      nil -> raise_error(path, "not found")
+      _ -> update(module, path, lambda)
+    end
+  end
+
+  @doc """
+  Update attribute to path.
+
+  Available at compile time only.
+
+  ## Example
+      Attributes.update(MyModule, [:path], & &1 + 1)
+  """
+  def update(module, [], _lambda) do
+    raise "No path provided when updating #{module}."
+  end
+
+  def update(module, path, lambda) do
+    edit_attributes(module, filter(path), "update", fn attributes, path ->
+      attributes
+      |> get_and_update_in(path, &{&1, lambda.(&1)})
+      |> elem(1)
+    end)
+  end
+
+  @doc """
   Deletes attribute by path and raises if not found.
 
   It is the extension of `delete/2` that requires the value and the path to be defined:
