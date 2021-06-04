@@ -14,7 +14,7 @@ The package can be installed by adding `attributes` to your list of dependencies
 ```elixir
 def deps do
   [
-    {:attributes, "~> 0.2.0"}
+    {:attributes, "~> 0.3.0"}
   ]
 end
 ```
@@ -28,7 +28,7 @@ Full documentation can be found at [https://hexdocs.pm/attributes](https://hexdo
 Attributes offers utility functions to manipulate complex attributes on modules.
 
 A typical usage could be inside macros that need to enrich modules before their compilation.
-You can set, get or delete attributes' tree using partial or full path.
+You can set, get, update or delete attributes' tree using partial or full path.
 
 ```elixir
 defmodule MyModule do
