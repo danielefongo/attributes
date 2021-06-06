@@ -180,6 +180,14 @@ defmodule AttributesTest do
       assert get_attrs(ShallowUpdate) == [key: 42]
     end
 
+    test "update nil" do
+      defmodule ShallowUpdateNil do
+        Attributes.update(__MODULE__, [:key], fn _ -> 42 end)
+      end
+
+      assert get_attrs(ShallowUpdateNil) == [key: 42]
+    end
+
     test "update!" do
       defmodule ShallowUpdateBang do
         Attributes.set(__MODULE__, [:key], 41)
@@ -311,27 +319,35 @@ defmodule AttributesTest do
 
     test "update" do
       defmodule NestedUpdate do
-        Attributes.set(__MODULE__, [:key], 41)
-        Attributes.update(__MODULE__, [:key], &(&1 + 1))
+        Attributes.set(__MODULE__, [:key, :subkey], 41)
+        Attributes.update(__MODULE__, [:key, :subkey], &(&1 + 1))
       end
 
-      assert get_attrs(NestedUpdate) == [key: 42]
+      assert get_attrs(NestedUpdate) == [key: [subkey: 42]]
+    end
+
+    test "update nil" do
+      defmodule NestedUpdateNil do
+        Attributes.update(__MODULE__, [:key, :subkey], fn _ -> 42 end)
+      end
+
+      assert get_attrs(NestedUpdateNil) == [key: [subkey: 42]]
     end
 
     test "update!" do
       defmodule NestedUpdateBang do
-        Attributes.set(__MODULE__, [:key], 41)
-        Attributes.update!(__MODULE__, [:key], &(&1 + 1))
+        Attributes.set(__MODULE__, [:key, :subkey], 41)
+        Attributes.update!(__MODULE__, [:key, :subkey], &(&1 + 1))
       end
 
-      assert get_attrs(NestedUpdateBang) == [key: 42]
+      assert get_attrs(NestedUpdateBang) == [key: [subkey: 42]]
     end
 
     test "set! raise on nil" do
       assert_raise RuntimeError, fn ->
         defmodule NestedUpdateBangRaise do
-          Attributes.set(__MODULE__, [:key], nil)
-          Attributes.update!(__MODULE__, [:key], &(&1 + 1))
+          Attributes.set(__MODULE__, [:key, :subkey], nil)
+          Attributes.update!(__MODULE__, [:key, :subkey], &(&1 + 1))
         end
       end
     end
