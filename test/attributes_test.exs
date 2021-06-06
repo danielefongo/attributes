@@ -412,6 +412,18 @@ defmodule AttributesTest do
         Attributes.set!(Dummy, [:key], :value2)
       end
     end
+
+    test "update raise" do
+      assert_raise RuntimeError, fn ->
+        Attributes.update(Dummy, [:key], fn _ -> :any end)
+      end
+    end
+
+    test "update! raise" do
+      assert_raise RuntimeError, fn ->
+        Attributes.update!(Dummy, [:key], fn _ -> :any end)
+      end
+    end
   end
 
   defp get_attrs(module), do: module.__info__(:attributes)[:__attributes__]
