@@ -14,10 +14,10 @@ defmodule Attributes do
   The previous assignment could be rewritten as follow:
 
   ### Example
-    Attributes.set(__MODULE__, [:path], [to: [attr: :value]])
+      Attributes.set(__MODULE__, [:path], [to: [attr: :value]])
 
   ### Example
-    Attributes.set(__MODULE__, [:path], %{to: %{attr: :value}})
+      Attributes.set(__MODULE__, [:path], %{to: %{attr: :value}})
 
   After defining an attribute, you can obtain its value using `get/2`, `get/3` or `get!/2` methods.
 
@@ -103,7 +103,7 @@ defmodule Attributes do
   Available at compile time only.
 
   ## Example
-      Attributes.get(MyModule, [:path], :value)
+      Attributes.set(MyModule, [:path], :value)
   """
   def set(module, [], value) do
     raise "No path provided when assigning #{value} on #{module}."
