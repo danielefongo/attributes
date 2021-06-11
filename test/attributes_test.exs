@@ -101,6 +101,15 @@ defmodule AttributesTest do
     test "default" do
       assert Attributes.get(Dummy, [:key, :subkey], :default) == :default
     end
+
+    test "all" do
+      defmodule GetAll do
+        Module.register_attribute(__MODULE__, :__attributes__, persist: true)
+        @__attributes__ [key: [subkey: :value]]
+      end
+
+      assert Attributes.get(GetAll) == [key: [subkey: :value]]
+    end
   end
 
   describe "get!" do
@@ -159,6 +168,16 @@ defmodule AttributesTest do
       assert_raise RuntimeError, fn ->
         Attributes.delete(Dummy, [:key, :subkey])
       end
+    end
+
+    test "all" do
+      defmodule DeleteAll do
+        Module.register_attribute(__MODULE__, :__attributes__, persist: true)
+        @__attributes__ [key: [subkey: :value]]
+        Attributes.delete(__MODULE__)
+      end
+
+      assert get_attrs(DeleteAll) == []
     end
   end
 

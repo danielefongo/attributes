@@ -3,7 +3,7 @@ defmodule Attributes do
   Attributes offers utility functions to manipulate complex attributes on modules.
 
   A typical usage could be inside macros that need to enrich modules before their compilation.
-  You can set, update, get or delete attributes' tree using partial or full path.
+  You can set, update, get or delete attributes' tree.
 
   ## Example
       defmodule MyModule do
@@ -48,6 +48,14 @@ defmodule Attributes do
       value -> value
     end
   end
+
+  @doc """
+  Get all attributes.
+
+  ## Example
+      Attributes.get(MyModule)
+  """
+  def get(module), do: get_attributes(module)
 
   @doc """
   Gets attribute by path.
@@ -171,6 +179,7 @@ defmodule Attributes do
   @doc """
   Deletes attribute by path and raises if not found.
 
+  Available at compile time only.
   It is the extension of `delete/2` that requires the value and the path to be defined:
   - path should exist
   - value should not be `nil`
@@ -186,8 +195,23 @@ defmodule Attributes do
   end
 
   @doc """
+  Delete all attributes.
+
+  Available at compile time only.
+
+  ## Example
+      Attributes.delete(MyModule)
+  """
+  def delete(module) do
+    validate_and_create(module)
+
+    Module.put_attribute(module, @attributes_field, [])
+  end
+
+  @doc """
   Deletes attribute by path.
 
+  Available at compile time only.
   It does not raise if the path is not found.
 
   ## Example
@@ -214,13 +238,7 @@ defmodule Attributes do
   end
 
   defp edit_attributes(module, path, action_name, lambda) do
-    if not editable?(module) do
-      raise "#{module} already compiled."
-    end
-
-    if is_nil(Module.get_attribute(module, @attributes_field)) do
-      Module.register_attribute(module, @attributes_field, persist: true)
-    end
+    validate_and_create(module)
 
     try do
       new_attributes =
@@ -250,6 +268,16 @@ defmodule Attributes do
       raise "#{key} #{message} in #{path}."
     else
       raise "#{key} #{message}."
+    end
+  end
+
+  defp validate_and_create(module) do
+    if not editable?(module) do
+      raise "#{module} already compiled."
+    end
+
+    if is_nil(Module.get_attribute(module, @attributes_field)) do
+      Module.register_attribute(module, @attributes_field, persist: true)
     end
   end
 end
