@@ -33,7 +33,7 @@ defmodule Attributes do
   @attributes_field :__attributes__
 
   @doc """
-  Gets attribute by path and raises if not found.
+  Gets attribute in path and raises if not found.
 
   It is the extension of `get/2` that requires the value and the path to be defined:
   - path should exist
@@ -50,7 +50,7 @@ defmodule Attributes do
   end
 
   @doc """
-  Get all attributes.
+  Gets all attributes.
 
   ## Example
       Attributes.get(MyModule)
@@ -58,9 +58,9 @@ defmodule Attributes do
   def get(module), do: get_attributes(module)
 
   @doc """
-  Gets attribute by path.
+  Gets attribute in path.
 
-  It returns nil if path is not found.
+  It returns `nil` if path is not found.
 
   ## Example
       Attributes.get(MyModule, [:path])
@@ -68,9 +68,9 @@ defmodule Attributes do
   def get(module, path), do: get(module, path, nil)
 
   @doc """
-  Gets attribute by path with default.
+  Gets attribute in path with default.
 
-  It returns default if path is not found.
+  It returns default if path is not found or the value is `nil`.
 
   ## Example
       Attributes.get(MyModule, [:path], :default)
@@ -90,7 +90,7 @@ defmodule Attributes do
   end
 
   @doc """
-  Sets attribute to path and raise error if already defined.
+  Sets attribute in path and raise error if already defined.
 
   Available at compile time only.
   It is the extension of `set/3` that requires the path to don't have a value.
@@ -106,7 +106,7 @@ defmodule Attributes do
   end
 
   @doc """
-  Sets attribute to path.
+  Sets attribute in path.
 
   Available at compile time only.
 
@@ -124,7 +124,7 @@ defmodule Attributes do
   end
 
   @doc """
-  Update attribute to path and raise error if not found.
+  Updates attribute in path and raise error if not found.
 
   Available at compile time only.
   It is the extension of `update/3` that requires the value and the path to be defined:
@@ -142,7 +142,7 @@ defmodule Attributes do
   end
 
   @doc """
-  Update attribute to path.
+  Updates attribute in path.
 
   Available at compile time only.
 
@@ -152,7 +152,7 @@ defmodule Attributes do
   def update(module, path, lambda), do: update(module, path, nil, lambda)
 
   @doc """
-  Update attribute to path with default lambda input value.
+  Updates attribute in path with default lambda input value.
 
   Available at compile time only.
 
@@ -177,7 +177,7 @@ defmodule Attributes do
   end
 
   @doc """
-  Deletes attribute by path and raises if not found.
+  Deletes attribute in path and raises if not found.
 
   Available at compile time only.
   It is the extension of `delete/2` that requires the value and the path to be defined:
@@ -195,7 +195,7 @@ defmodule Attributes do
   end
 
   @doc """
-  Delete all attributes.
+  Deletes all attributes.
 
   Available at compile time only.
 
@@ -209,7 +209,7 @@ defmodule Attributes do
   end
 
   @doc """
-  Deletes attribute by path.
+  Deletes attribute in path.
 
   Available at compile time only.
   It does not raise if the path is not found.
