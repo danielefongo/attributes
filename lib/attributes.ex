@@ -141,14 +141,29 @@ defmodule Attributes do
   ## Example
       Attributes.update(MyModule, [:path], & &1 + 1)
   """
-  def update(module, [], _lambda) do
+  def update(module, path, lambda), do: update(module, path, nil, lambda)
+
+  @doc """
+  Update attribute to path with default lambda input value.
+
+  Available at compile time only.
+
+  ## Example
+      Attributes.update(MyModule, [:path], 41, & &1 + 1)
+  """
+  def update(module, [], _default, _lambda) do
     raise "No path provided when updating #{module}."
   end
 
-  def update(module, path, lambda) do
+  def update(module, path, default, lambda) do
+    update_lambda = fn
+      nil -> {nil, lambda.(default)}
+      value -> {value, lambda.(value)}
+    end
+
     edit_attributes(module, filter(path), "update", fn attributes, path ->
       attributes
-      |> get_and_update_in(path, &{&1, lambda.(&1)})
+      |> get_and_update_in(path, update_lambda)
       |> elem(1)
     end)
   end

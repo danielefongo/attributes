@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Default lambda input value for update method
+
 ## [0.3.0] - 2021-06-04
 
 ### Added

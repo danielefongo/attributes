@@ -216,6 +216,14 @@ defmodule AttributesTest do
       assert get_attrs(UpdateNil) == [key: [subkey: 42]]
     end
 
+    test "default" do
+      defmodule UpdateDefault do
+        Attributes.update(__MODULE__, [:key, :subkey], 41, &(&1 + 1))
+      end
+
+      assert get_attrs(UpdateDefault) == [key: [subkey: 42]]
+    end
+
     test "already compiled raise" do
       assert_raise RuntimeError, fn ->
         Attributes.update(Dummy, [:key], fn _ -> :any end)
