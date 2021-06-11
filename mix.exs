@@ -2,7 +2,7 @@ defmodule Attributes.MixProject do
   use Mix.Project
 
   @github "https://github.com/danielefongo/attributes"
-  @version "0.3.0"
+  @version "0.4.0"
 
   def project do
     [

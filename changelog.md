@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.4.0] - 2021-06-11
+
 ### Added
 
 - Get all method
@@ -34,7 +36,8 @@ All notable changes to this project will be documented in this file.
 
 - Basic setters and getters
 
-[unreleased]: https://github.com/danielefongo/attributes/compare/v0.3.0...HEAD
+[unreleased]: https://github.com/danielefongo/attributes/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/danielefongo/attributes/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/danielefongo/attributes/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/danielefongo/attributes/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/danielefongo/attributes/compare/v0.1.0...v0.1.1
